@@ -22,7 +22,6 @@ public class getCryptoPrice {
     private static final String auth = "12345678";
     private static final int sleepMillis = 10000;
 
-    private static  final String[] name = {"BTC","ETH","BNB","SHIB"};
 
     /**
      * @param crypto 傳入貨幣名字

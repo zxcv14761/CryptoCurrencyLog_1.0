@@ -1,6 +1,5 @@
 package com.ya666.cryptocurrencylog.util;
 
-import com.ya666.cryptocurrencylog.pojo.CryptoType;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="../bootstrap3/jquery-3.6.2.main.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/mymoney.css">
+    <script type="text/javascript">
+
+        var source = new EventSource('/money/get_data');
+        source.onmessage = function (event) {
+            var m = JSON.parse(event.data)
+            let id = m.id;
+            let cname = m.cname;
+            let price = m.price;
+            let date = m.date;
+            let str = "";
+            if(id ==="0"){
+                $("#crawcprice-money0").empty();
+                str = "<td>"+cname+"</td>" +
+                      "<td>"+price+"</td>" +
+                      "<td>"+date+"</td>"
+                $("#crawcprice-money0").append(str)
+            }if(id ==="1"){
+                $("#crawcprice-money1").empty();
+                str = "<td>"+cname+"</td>" +
+                      "<td>"+price+"</td>" +
+                      "<td>"+date+"</td>"
+                $("#crawcprice-money1").append(str)
+            }if(id ==="2"){
+                $("#crawcprice-money2").empty();
+                str = "<td>"+cname+"</td>" +
+                      "<td>"+price+"</td>" +
+                      "<td>"+date+"</td>"
+                $("#crawcprice-money2").append(str)
+            }if(id ==="3"){
+                $("#crawcprice-money3").empty();
+                str = "<td>"+cname+"</td>" +
+                      "<td>"+price+"</td>" +
+                      "<td>"+date+"</td>"
+                $("#crawcprice-money3").append(str)
+            }
+        };
+
+
+
+
+        $(function () {
+            $(".top").load("components/head.html")
+            $(".left").load("components/left.html")
+            $(".bottom").load("components/footer.html")
+
+        })
+
+
+        function yyyy() {
+            $.ajax({
+                url:"/test",
+                type:"get",
+                dataType:"json",
+                success: function (res) {
+                    console.log(res)
+                }
+            })
+        }
+
+
+    </script>
+
+</head>
+
+<body>
+
+<div class="parent">
+    <div class="top"></div>
+    <div class="left"></div>
+    <div class="right">
+
+
+        <table id="crawcprice-table">
+            <thead>
+            <tr>
+                <th>貨幣名稱</th>
+                <th>單價(NT)</th>
+                <th>更新日期</th>
+            </tr>
+            </thead>
+            <tbody id="crawcprice-money">
+            <tr id = crawcprice-money0>
+
+            </tr>
+            <tr id = crawcprice-money1>
+
+            </tr>
+            <tr id = crawcprice-money2>
+
+            </tr>
+            <tr id = crawcprice-money3>
+
+            </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+    <div class="bottom"></div>
+</div>
+
+</body>
+</html>

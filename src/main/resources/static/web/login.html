@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>加密貨幣記帳系統</title>
+
+    <link rel="stylesheet" type="text/css" href="../css/logincss.css">
+    <script src="../bootstrap3/jquery-3.6.2.main.js"></script>
+</head>
+
+                <script>
+                    $(function (){
+                        doLogin();
+                        delerror();
+                    })
+
+                    function delerror() {
+                        $("#Username").focus(function () {
+                            $("#error-msg").empty();
+                        })
+                        $("#Password").focus(function () {
+                            $("#error-msg").empty();
+                        })
+
+
+
+
+                    }
+
+                    //登入操作
+                    function doLogin() {
+
+                        $("#Login-btn").click(function (){
+
+                            let username = $("#Username").val()
+                            let pwd = $("#Password").val()
+
+                            if(username === "" || pwd === ""){
+                                $("#error-msg").html("請填寫完整登入訊息")
+                                return false
+                            }
+                            $.ajax({
+                                url:"/user",
+                                type:"post",
+                                data:$("#Login-form").serialize(),
+                                dataType:"json",
+                                success: function (res){
+                                    if (res.status === 200){
+                                        alert("登錄成功");
+                                        window.location.href = "index.html";
+                                        sessionStorage.setItem("user",JSON.stringify(res.data));
+                                    }else {
+                                        alert(res.message)
+                                        $("#Username").val("")
+                                        $("#Password").val("")
+                                    }
+                                },error: function (error) {
+                                    alert(error.status)
+                                }
+                            })
+                        })
+                    }
+                    //註冊操作
+                    function doRegister() {
+                            window.location.href = "register.html"
+                    }
+                </script>
+
+
+<body>
+                <form id="Login-form">
+                    <div class="imgcontainer">
+                        <img  style="width: 100px;height: 100px" src="../img/btc.png" alt="Avatar" class="avatar">
+                    </div>
+
+                    <div class="container">
+                        <div id="error-msg"  style="color: red;font-weight:bold;padding-top: 10px"  class="pull-right"></div>
+                        <label for="uname"><b>用戶名</b></label>
+                        <input type="text" id="Username" placeholder=" Username" name="userName" />
+                        <label for="psw"><b>密碼</b></label>
+                        <input type="password" id="Password" placeholder=" Password" name="password" />
+                        <input type="button" id="Login-btn" value="登錄"/>
+                    </div>
+                    <div class="container" style="background-color:#f1f1f1">
+                        <button type="button" class="register-btn" onclick="doRegister()">註冊</button>
+                        <button type="button" class="cancelbtn" onclick="cancel()">離開</button>
+                    </div>
+                </form>
+</body>
+</html>

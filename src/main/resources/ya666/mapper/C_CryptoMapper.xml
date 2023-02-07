@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ya666.cryptocurrencylog.mapper.C_CryptoMapper">
+
+    <resultMap id="C_Crypto" type="com.ya666.cryptocurrencylog.pojo.ClientCrypto">
+        <id property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="cname" column="cname"/>
+        <result property="count" column="count"/>
+        <result property="price" column="price"/>
+        <result property="buyTime" column="buy_time"/>
+    </resultMap>
+    <insert id="addCrypto">
+        insert into c_account_crypto
+                    ( user_name, cname, count, price, buy_time)
+            VALUE
+                    (#{userName},#{cname},#{count},#{price},#{buyTime})
+    </insert>
+
+    <select id="findMoneyByname" resultMap="C_Crypto">
+        select * from c_account_crypto where user_name = #{userName}
+    </select>
+
+    <select id="findMoneyById" resultMap="C_Crypto">
+        select * from c_account_crypto where id = #{id}
+    </select>
+
+    <update id="UpdateMoneyById">
+        update c_account_crypto
+        set cname = #{cname}, price = #{price}, count = #{count}
+        where id = #{id}
+    </update>
+
+    <delete id="DelMyMoneyById">
+        delete from c_account_crypto where id = #{id}
+    </delete>
+
+</mapper>

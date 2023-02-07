@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>註冊</title>
+
+    <link rel="stylesheet" type="text/css" href="../css/register.css">
+    <script src="../bootstrap3/jquery-3.6.2.main.js"></script>
+
+</head>
+
+                <script>
+                    $(function (){
+                        doRegister();
+                    })
+
+                    /**
+                     * 前端處理註冊方法
+                     */
+                    function doRegister() {
+                        $("#register-btn").click(function (){
+                            let username = $("#uname").val();
+                            let pwd = $("#pwd").val();
+                            let Cpwd = $("#cpwd").val();
+
+                            if (username === "" || pwd === "" || Cpwd === "" ){
+                                $("#error-msg").text("請填寫完註冊訊息喔！");
+                                return false;
+                            }
+                            let nameCheck = /^\w{5,12}$/;
+                            if(!(nameCheck.test(username))){
+                                $("#error-msg").text("用戶名要在 5-12位字母或數字！");
+                                return false;
+                            }else {
+                                $("#error-msg").empty()
+                            }
+
+                            let pasCheck = /^\w{5,12}$/;
+                            if(!(pasCheck.test(pwd))){
+                                $("#error-msg").text("密碼要在 5-12位字母或數字！");
+                                return false;
+                            }else {
+                                $("#error-msg").empty()
+                            }
+
+
+                            if (Cpwd !== pwd){
+                                $("#error-msg").text("密碼不一致");
+                                return false;
+                            }else {
+                                $("#error-msg").empty()
+                            }
+                            $.ajax({
+                                url:"/user/register",
+                                type:"post",
+                                data:$("#register-form").serialize(),
+                                dataType:"json",
+                                success: function (res){
+                                    if (res.status === 200){
+                                        alert("註冊成功");
+                                        window.location.href = "login.html";
+                                    }else {
+                                        $("#error-msg").html(res.message)
+                                    }
+                                },error: function (error) {
+                                    alert(error.status)
+                                }
+                            })
+                        })
+                    }
+                    function cancel() {
+                        window.location.href = "index.html"
+                    }
+                </script>
+
+
+<body>
+                <form id="register-form">
+                    <div class="imgcontainer">
+                        <img  style="width: 100px;height: 100px" src="../img/btc.png" alt="Avatar" class="avatar"><br>
+                        <label for="uname"><b>註冊系統</b></label>
+                    </div>
+
+                    <div class="container">
+                        <div id="error-msg"  style="color: red;font-weight:bold;padding-top: 10px"  class="pull-right"></div>
+                        <label for="uname"><b>用戶名</b></label>
+                        <input type="text" placeholder="請輸入帳號"id="uname" name="userName" required/>
+                        <label for="psw"><b>密碼</b></label>
+                        <input type="password" placeholder="請輸入密碼"  id="pwd" name="password" required/>
+                        <label for="psw"><b>確認密碼</b></label>
+                        <input type="password" placeholder="確認密碼" id="cpwd"  required/>
+                        <button type="button" id="register-btn">註冊</button>
+                        <button type="button" class="cancelbtn" onclick="cancel()">離開</button>
+                    </div>
+                </form>
+</body>
+</html>

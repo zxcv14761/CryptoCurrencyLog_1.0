@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ya666.cryptocurrencylog.mapper.UserMapper">
+
+    <resultMap id="user" type="com.ya666.cryptocurrencylog.pojo.User">
+        <id property="uid" column="uid"/>
+        <result property="userName" column="user_name"/>
+        <result property="password" column="password"/>
+        <result property="salt" column="salt"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="modifiedUser" column="modified_user"/>
+        <result property="modifiedTime" column="modified_time"/>
+    </resultMap>
+    <insert id="insertUser">
+        insert into c_account
+            (user_name, password, salt, create_user, create_time, modified_user, modified_time)
+        VALUE
+            (#{userName},#{password},#{salt},#{createUser},#{createTime},#{modifiedUser},#{modifiedTime})
+    </insert>
+    <select id="checkUser" resultMap="user">
+        select user_name  from c_account where user_name = #{userName}
+    </select>
+    <select id="queryUserByUsername" resultMap="user">
+        select uid,user_name,password,salt from c_account where user_name = #{userName}
+    </select>
+
+</mapper>

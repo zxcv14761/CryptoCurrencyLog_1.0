@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>資產總覽</title>
+
+    <script src="../bootstrap3/jquery-3.6.2.main.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/mymoney.css">
+    <script type="text/javascript">
+
+
+        $(function () {
+            $(".top").load("components/head.html")
+            $(".left").load("components/left.html")
+            $(".bottom").load("components/footer.html")
+        })
+
+
+        function Show() {
+            document.getElementById('shade').classList.remove('hide');
+            document.getElementById('modal').classList.remove('hide');
+        }
+
+        function Hide() {
+            document.getElementById('shade').classList.add('hide');
+            document.getElementById('modal').classList.add('hide');
+        }
+        function newHide() {
+            document.getElementById('shade').classList.add('hide');
+            $("#modifyCrypto").hide();
+        }
+
+        //添加貨幣資產
+        function addMoneyto() {
+
+            let cname = $("#cryptoName").val()
+            let cprice = $("#cryptoPrice").val()
+            let count = $("#cryptoCount").val()
+
+            if (cname === "" || cprice === "" || count === "") {
+                $("#error-msg").text("請輸入完整訊息！")
+                return false;
+            }
+            let nameCheck = /^[0-9]+(\.?[0-9]+)?$/;
+
+            if (!(nameCheck.test(cprice))) {
+                $("#error-msg").text("請輸入正確數字！小數或整數")
+                return false;
+            } else {
+                $("#error-msg").empty()
+            }
+            if (!(nameCheck.test(count))) {
+                $("#error-msg").text("請輸入正確數字！小數或整數")
+                return false;
+            } else {
+                $("#error-msg").empty()
+            }
+
+            $.ajax({
+                url: "/money/addMoney",
+                type: "post",
+                data: $("#addCrypto-form").serialize(),
+                dataType: "json",
+                success: function (res) {
+                    if (res.status === 200) {
+                        alert("添加成功");
+                    } else {
+                        alert(res.message)
+                    }
+                },
+                error: function (error) {
+                    alert(error.status)
+                }
+            })
+            Hide();
+
+        }
+
+        //依據帳號查詢錢包
+        function findmymoney() {
+            $.ajax({
+                url: "/money/findMyMoney",
+                type: "post",
+                dataType: "json",
+                success: function (res) {
+                    if(res.data !== 0){
+                        $("#cprice-money").empty();
+                        for (let i = 0; i < res.data.length; i++){
+                            let str = "";
+                            let crypto = res.data[i]
+
+                            let total = crypto.price * crypto.count
+
+                            str = "<tr>" +
+                                "<td>"+ crypto.cname+ "</td>" +
+                                "<td>"+ crypto.count+ "</td>" +
+                                "<td>"+ crypto.price+ "</td>" +
+                                "<td>"+ total + "</td>" +
+                                "<td>"+ crypto.buyTime+ "</td>" +
+                                "<td>" +
+                                "<button id='create-btn' onclick='updateCrypto(#{updateId})'>修改</button>" +
+                                "</td>" +
+                                "<td>" +
+                                "<button id='del-btn' onclick='delCrypto(#{delId})'>刪除</button>" +
+                                "</td>" +
+                                "</tr>"
+
+                            str = str.replaceAll("#{updateId}",crypto.id)
+                            str = str.replaceAll("#{delId}",crypto.id)
+                            $("#cprice-money").append(str)
+                        }
+                    }
+                }
+            })
+        }
+        //刪除貨幣資料
+        function delCrypto(id) {
+            if(!window.confirm("無法恢復,確定刪除？")){
+                return false;
+            }
+            $.ajax({
+                url: "/money/DelMyMoneyById",
+                type: "post",
+                data: {id : id},
+                dataType: "json",
+                success: function (res) {
+                   if (res.status === 200){
+                       alert("刪除成功")
+                       newHide();
+                   }else {
+                       alert(res.message)
+                   }
+                }
+            })
+        }
+
+        //更新貨幣資料
+        function updateCrypto(id) {
+            document.getElementById('shade').classList.remove('hide');
+            $("#modifyCrypto").show()
+            $.ajax({
+                url: "/money/findMyMoneyById",
+                type: "post",
+                data: {id : id},
+                dataType: "json",
+                success: function (res) {
+                    $("#modify-cryptoID").val(id)
+                    $("#modify-cryptoName").val(res.data.cname)
+                    $("#modify-cryptoCount").val(res.data.count)
+                    $("#modify-cryptoPrice").val(res.data.price)
+                }
+            })
+        }
+
+        //更新選中資產
+        function modifyMoneyto() {
+            let cname = $("#modify-cryptoName").val()
+            let cprice = $("#modify-cryptoPrice").val()
+            let count = $("#modify-cryptoCount").val()
+
+            if (cname === "" || cprice === "" || count === "") {
+                $("#modifyError-msg").text("請輸入完整訊息！")
+                return false;
+            }
+            let nameCheck = /^[0-9]+(\.?[0-9]+)?$/;
+
+            if (!(nameCheck.test(cprice))) {
+                $("#modifyError-msg").text("請輸入正確數字！小數或整數")
+                return false;
+            } else {
+                $("#modifyError-msg").empty()
+            }
+            if (!(nameCheck.test(count))) {
+                $("#modifyError-msg").text("請輸入正確數字！小數或整數")
+                return false;
+            } else {
+                $("#modifyError-msg").empty()
+            }
+            if(!window.confirm("無法恢復,確定刪除？")){
+                return false;
+            }
+            $.ajax({
+                url: "/money/UpdateMoneyById",
+                type: "post",
+                data: $("#modifyCrypto-form").serialize(),
+                dataType: "json",
+                success: function (res) {
+                    if (res.status === 200) {
+                        newHide();
+                        alert("修改成功");
+                    } else {
+                        alert(res.message)
+                    }
+                },
+                error: function (error) {
+                    alert(error.status)
+                }
+            })
+        }
+
+        function yyyy() {
+            $.ajax({
+                url: "/money/addMoney",
+                type: "post",
+                data: "123=123",
+                dataType: "json",
+                success: function (res) {
+                }
+            })
+        }
+
+    </script>
+
+</head>
+
+<body>
+
+<div class="parent">
+    <div class="top"></div>
+    <div class="left"></div>
+    <div class="right">
+        <div>
+            <table>
+                <tr>
+                    <td><input type="button" value="查詢" onclick="findmymoney()"></td>
+                    <td><input type="button" value="添加" onclick="Show()"></td>
+                </tr>
+            </table>
+        </div>
+        <table id="cprice-table">
+            <thead>
+            <tr>
+                <th>名稱</th>
+                <th>單價</th>
+                <th>數量</th>
+                <th>總價</th>
+                <th>日期</th>
+                <th colspan="2">操作</th>
+            </tr>
+            </thead>
+            <tbody id="cprice-money">
+<!--                 等待資料填入           -->
+            </tbody>
+        </table>
+
+        <div id="shade" class="c1 hide"></div>
+        <div id="modal" class="c2 hide">
+            <form id="addCrypto-form">
+                <div id="error-msg" style="color: red;font-weight:bold;padding-top: 10px" class="pull-right"></div>
+                <p>名稱：<input type="text" id="cryptoName" name="cname"/></p>
+                <p>單價：<input type="text" id="cryptoPrice" name="price"/></p>
+                <p>數量：<input type="text" id="cryptoCount" name="count"/></p>
+            </form>
+            <p>
+                <input type="button" value="添加" id="addmoney-btn" onclick="addMoneyto()">
+                <input type="button" value="取消" onclick="Hide()">
+            </p>
+        </div>
+
+        <div id="modifyCrypto" class="modifyCrypto">
+            <form id="modifyCrypto-form">
+                <div id="modifyError-msg" style="color: red;font-weight:bold;padding-top: 10px" class="pull-right"></div>
+                <input type="text" id="modify-cryptoID" name="id" style="display: none"/>
+                <p>名稱：<input type="text" id="modify-cryptoName" name="cname"/></p>
+                <p>單價：<input type="text" id="modify-cryptoPrice" name="price"/></p>
+                <p>數量：<input type="text" id="modify-cryptoCount" name="count"/></p>
+            </form>
+            <p>
+                <input type="button" value="修改" id="Modifymoney-btn" onclick="modifyMoneyto()">
+                <input type="button" value="取消" onclick="newHide()">
+            </p>
+        </div>
+    </div>
+    <div class="bottom"></div>
+</div>
+
+</body>
+</html>

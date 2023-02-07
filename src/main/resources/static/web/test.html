@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="../bootstrap3/jquery-3.6.2.main.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/index.css">
+    <script type="text/javascript">
+
+        const socket = new WebSocket("wss://echo.websocket.org");
+
+        // Connection opened
+        socket.addEventListener('open', function (event) {
+            console.log('Open connection')
+            socket.send('Hello Server!');
+        });
+
+        // Listen for messages
+        socket.addEventListener('message', function (event) {
+            console.log(`Message from server: ${event.data}`);
+        });
+
+
+
+        $(function () {
+            $(".top").load("components/head.html")
+            $(".left").load("components/left.html")
+            $(".bottom").load("components/footer.html")
+
+        })
+
+
+        function yyyy() {
+            $.ajax({
+                url:"/test",
+                type:"get",
+                dataType:"json",
+                success: function (res) {
+                    console.log(res)
+                }
+            })
+        }
+
+
+    </script>
+
+</head>
+
+<body>
+
+<div class="parent">
+    <div class="top"></div>
+    <div class="left"></div>
+    <div class="right">
+
+        <div id="result1">1</div>
+        <div id="result2">2</div>
+        <div id="result3">3</div>
+        <div id="result4">4</div>
+
+        <table id="crawcprice-table">
+            <thead>
+            <tr>
+                <th>名稱</th>
+                <th>單價</th>
+                <th>日期</th>
+            </tr>
+            </thead>
+            <tbody id="crawcprice-money">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="bottom"></div>
+</div>
+
+</body>
+</html>

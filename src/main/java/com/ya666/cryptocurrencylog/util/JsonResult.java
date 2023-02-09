@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 public class JsonResult<E> {
-    //響應狀態碼 200-成功 4000-用户名重复 5000-數據庫服務器異常
+    //響應狀態碼 200-成功 4000-用戶名重复 5000-數據庫服務器異常
     private int status;
     //響應訊息
     private String message;

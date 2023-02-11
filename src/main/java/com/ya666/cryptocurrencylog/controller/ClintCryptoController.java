@@ -96,22 +96,16 @@ public class ClintCryptoController extends BaseController {
 
     @RequestMapping(value = "/get_data", produces = "text/event-stream;charset=UTF-8")
     public String getData() {
-        try {
-            Thread.sleep(1000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if(i == findCryptoByName.length){
-            i=0;
-        }
-        String cname = "";
-        cname = findCryptoByName[i];
-        Map<String, String> allCrypto = getCryptoPrice.getAllCrypto(cname);
-        allCrypto.put("id", String.valueOf(i));
-        i++;
-        JSONObject json = new JSONObject(allCrypto);
-        return "data:"+json+"\n\n";
+            if (i == findCryptoByName.length) {
+                i = 0;
+            }
+            String cname = "";
+            cname = findCryptoByName[i];
+            Map<String, String> allCrypto = getCryptoPrice.getAllCrypto(cname);
+            allCrypto.put("id", String.valueOf(i));
+            i++;
+            JSONObject json = new JSONObject(allCrypto);
+            return "data:" + json + "\n\n";
 
 
 //        return "data:"+d+""+i+"\n\n";

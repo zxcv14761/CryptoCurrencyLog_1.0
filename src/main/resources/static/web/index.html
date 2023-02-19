@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="../css/mymoney.css">
     <script type="text/javascript">
 
-        var source = new EventSource('/money/get_data');
+        var source = new EventSource('/sse');
         source.onmessage = function (event) {
             var m = JSON.parse(event.data)
             let id = m.id;
@@ -41,6 +41,7 @@
                       "<td>"+date+"</td>"
                 $("#crawcprice-money3").append(str)
             }
+
         };
 
 

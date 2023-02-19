@@ -25,13 +25,6 @@ import java.util.Map;
 @RequestMapping("/money")
 public class ClintCryptoController extends BaseController {
 
-
-
-    String[] findCryptoByName = {"BTC", "ETH", "BNB", "SHIB"};
-
-    int i = 0;
-
-
     @Resource
     IClientCryptoService iClientCryptoService;
 

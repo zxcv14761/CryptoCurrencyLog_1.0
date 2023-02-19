@@ -2,7 +2,10 @@ package com.ya666.cryptocurrencylog.controller;
 
 
 import com.ya666.cryptocurrencylog.util.getCryptoPrice;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -20,7 +23,6 @@ public class SSEController {
 
 
         private final ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
-
         @GetMapping("/sse")
         public SseEmitter handleSseRequest() {
             final SseEmitter emitter = new SseEmitter();
@@ -40,8 +42,10 @@ public class SSEController {
 
     private List<Map<String, String>> getDataList() {
         List<Map<String, String>> dataList = new ArrayList<>();
+//        List<Map<String, String>> dataList = getCryptoPrice.getAllCrypto(findCryptoByName);
+
         for (int i = 0; i < findCryptoByName.length; i++) {
-            Map<String, String> allCrypto = getCryptoPrice.getAllCrypto(findCryptoByName[i]);
+            Map<String, String> allCrypto = getCryptoPrice.getCryptoByName(findCryptoByName[i]);
             allCrypto.put("id", String.valueOf(i));
             dataList.add(allCrypto);
         }

@@ -4,9 +4,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -81,8 +84,18 @@ public class getCryptoPrice {
 
 
     public static Map<String,String> getAllCrypto(String name){
-
+        jedis.auth(auth);
         return jedis.hgetAll(name);
+
+    }
+    public static ArrayList<Map<String,String>> getAllCrypto1(String[] all){
+        ArrayList<Map<String,String>> allc = new ArrayList<>();
+        jedis.auth(auth);
+        for (String s : all) {
+             allc.add(jedis.hgetAll(s));
+        }
+        return allc;
+
 
     }
 

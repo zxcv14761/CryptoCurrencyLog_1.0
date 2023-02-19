@@ -1,1 +1,7 @@
 <p id="title" style="color: #f1f1f1">加密貨幣小幫手</p>
+
+<script>
+    var item = sessionStorage.getItem("user");
+    var parse = JSON.parse(item);
+    $("#titleUserName").html("歡迎 "+parse.userName + " 登入！")
+</script>

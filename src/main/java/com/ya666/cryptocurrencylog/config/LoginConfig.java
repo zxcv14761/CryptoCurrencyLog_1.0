@@ -20,7 +20,7 @@ public class LoginConfig implements WebMvcConfigurer {
                                      "/web/register.html",
                                      "/bootstrap3/**","/css/**","/img/**")
                 //放行請求接口
-                .excludePathPatterns("/money/**","/user/**")
+                .excludePathPatterns("/money/**","/user/**","/sse")
                 .excludePathPatterns("/error");
 
     }

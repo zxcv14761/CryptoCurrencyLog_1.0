@@ -8,6 +8,11 @@ import com.ya666.cryptocurrencylog.util.getCryptoPrice;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +25,12 @@ import java.util.Map;
 @RequestMapping("/money")
 public class ClintCryptoController extends BaseController {
 
+
+
     String[] findCryptoByName = {"BTC", "ETH", "BNB", "SHIB"};
+
     int i = 0;
+
 
     @Resource
     IClientCryptoService iClientCryptoService;
@@ -94,40 +103,7 @@ public class ClintCryptoController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/get_data", produces = "text/event-stream;charset=UTF-8")
-    public String getData() {
-        try {
-            Thread.sleep(1000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        if(i == findCryptoByName.length){
-            i=0;
-        }
-        String cname = "";
-        cname = findCryptoByName[i];
-        Map<String, String> allCrypto = getCryptoPrice.getAllCrypto(cname);
-        allCrypto.put("id", String.valueOf(i));
-        i++;
-        JSONObject json = new JSONObject(allCrypto);
-        return "data:"+json+"\n\n";
-
-
-//        return "data:"+d+""+i+"\n\n";
-//        return "data:"+allCrypto.toString()+""+i+"\n\n";
-//        return "data: {\\n" +
-//                "data: 'msg': 'hello world',\\n" +
-//                "data: 'id': 12345\\n" +
-//                "data: }\\n\\n";
-
-        //{date=2023-02-03 08:07:43, cname=ETH, price=49024.60}2
-
-
-
-        //2.！！！注意，EventSource返回的参数必须以data:开头，"\n\n"结尾，不然onmessage方法无法执行。
-
-    }
 
 
 }

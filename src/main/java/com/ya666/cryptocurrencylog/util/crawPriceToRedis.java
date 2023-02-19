@@ -41,7 +41,7 @@ public class crawPriceToRedis {
         // 創建線程池對象
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
         // 設置核心線程數
-        threadPoolTaskExecutor.setCorePoolSize(2);
+        threadPoolTaskExecutor.setCorePoolSize(3);
         // 最大線程數
         threadPoolTaskExecutor.setMaxPoolSize(32);
         // 線程的閒置時間

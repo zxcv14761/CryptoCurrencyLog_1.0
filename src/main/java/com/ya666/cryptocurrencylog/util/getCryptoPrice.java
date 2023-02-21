@@ -44,7 +44,8 @@ public class getCryptoPrice {
      * @return 傳入貨幣名字調用 getUrlByName 找網址 Jsoup 解析網站得到價格
      * 2023/1/31 僅支援台幣版本
      */
-    public static void getPriceByName(String cryptoName) {
+
+    public static void getPriceByName (String cryptoName) {
         String urlByName = getUrlByName(cryptoName);
         jedis.auth(auth);
 
@@ -71,7 +72,7 @@ public class getCryptoPrice {
                 Credis.put("date",NowTime);
                 jedis.hset(cryptoName,Credis);
 
-                Thread.sleep(sleepMillis);
+                //Thread.sleep(sleepMillis);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

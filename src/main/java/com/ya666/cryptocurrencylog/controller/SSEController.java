@@ -1,11 +1,8 @@
 package com.ya666.cryptocurrencylog.controller;
 
 
+import com.ya666.cryptocurrencylog.util.crawTop10CryptoToRedis;
 import com.ya666.cryptocurrencylog.util.getCryptoPrice;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.task.TaskExecutor;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -22,23 +19,24 @@ public class SSEController {
     String[] findCryptoByName = {"BTC", "ETH", "BNB", "SHIB"};
 
 
-        private final ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
-        @GetMapping("/sse")
-        public SseEmitter handleSseRequest() {
-            final SseEmitter emitter = new SseEmitter();
-            cachedThreadPool.execute(() -> {
-                try {
-                    List<Map<String, String>> dataList = getDataList();
-                    for (Map<String, String> data : dataList) {
-                        emitter.send(data);
-                    }
-                    emitter.complete();
-                } catch (IOException e) {
-                    emitter.completeWithError(e);
+    private final ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+
+    @GetMapping("/sse")
+    public SseEmitter handleSseRequest() {
+        final SseEmitter emitter = new SseEmitter();
+        cachedThreadPool.execute(() -> {
+            try {
+                List<Map<String, String>> dataList = getDataList1();
+                for (Map<String, String> data : dataList) {
+                    emitter.send(data);
                 }
-            });
-            return emitter;
-        }
+                emitter.complete();
+            } catch (IOException e) {
+                emitter.completeWithError(e);
+            }
+        });
+        return emitter;
+    }
 
     private List<Map<String, String>> getDataList() {
         List<Map<String, String>> dataList = new ArrayList<>();
@@ -49,14 +47,16 @@ public class SSEController {
             allCrypto.put("id", String.valueOf(i));
             dataList.add(allCrypto);
         }
-        return  dataList;
+        return dataList;
+    }
+
+    private List<Map<String, String>> getDataList1() {
+
+        return crawTop10CryptoToRedis.getName();
     }
 
 
-
-
-
-    }
+}
 
 
 

@@ -20,9 +20,10 @@
 ![截圖 2023-02-13 下午7 06 35](https://user-images.githubusercontent.com/90376966/218442007-b4cc55ff-68b8-43a5-b023-efcb1f400452.png)
 
 ## 2.即時報價功能
- * 一組半自動爬蟲工具 主要以 Jsoup 爬取 coinmarketcap 指定貨幣資料後存入Redis 在傳遞資料給前端頁面
+ * 一組自動爬蟲工具 主要以 Jsoup 爬取 coinmarketcap 市值前10大貨幣資料後存入Redis 在傳遞資料給前端頁面
  
- ![截圖 2023-02-13 下午7 23 03](https://user-images.githubusercontent.com/90376966/218445741-58206d7b-603f-4112-94bb-d821738f67c7.png)
+![截圖 2023-02-21 下午7 38 07](https://user-images.githubusercontent.com/90376966/220335257-a1b558ed-fea3-47d6-be92-ae8cd5d16828.png)
+
 
 ## 3.查詢資產功能
 * 透過帳號查詢資料庫中對應所有資產

@@ -17,18 +17,23 @@ public class crawPriceToRedis {
     String[] name = {"BTC","ETH","BNB","SHIB"};
     String Cnmae = "";
 
+//    @Async("springThreadPool")
+//    @Scheduled(cron = "0/10 * * * * ?")
+//    public void configureTasks() throws InterruptedException {
+//
+//        for (int i = 0; i < name.length; i++) {
+//            if(i == 4){
+//                i=0;
+//            }
+//            Cnmae = name[i];
+//            getCryptoPrice.getPriceByName(Cnmae);
+//        }
+//    }
+
     @Async("springThreadPool")
     @Scheduled(cron = "0/10 * * * * ?")
-    public void configureTasks() throws InterruptedException {
-
-        for (int i = 0; i < name.length; i++) {
-            if(i == 4){
-                i=0;
-            }
-            Cnmae = name[i];
-            getCryptoPrice.getPriceByName(Cnmae);
-            Thread.sleep(10000);
-        }
+    public void testqq(){
+        crawTop10CryptoToRedis.getTop10Crypto();
     }
    
 

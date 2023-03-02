@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -47,7 +44,8 @@ public class getCryptoPrice {
      * @return 傳入貨幣名字調用 getUrlByName 找網址 Jsoup 解析網站得到價格
      * 2023/1/31 僅支援台幣版本
      */
-    public static void getPriceByName(String cryptoName) {
+
+    public static void getPriceByName (String cryptoName) {
         String urlByName = getUrlByName(cryptoName);
         jedis.auth(auth);
 
@@ -74,7 +72,7 @@ public class getCryptoPrice {
                 Credis.put("date",NowTime);
                 jedis.hset(cryptoName,Credis);
 
-                Thread.sleep(sleepMillis);
+                //Thread.sleep(sleepMillis);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -83,13 +81,14 @@ public class getCryptoPrice {
     }
 
 
-    public static Map<String,String> getAllCrypto(String name){
+    public static Map<String,String> getCryptoByName(String name){
         jedis.auth(auth);
         return jedis.hgetAll(name);
 
     }
-    public static ArrayList<Map<String,String>> getAllCrypto1(String[] all){
-        ArrayList<Map<String,String>> allc = new ArrayList<>();
+    public static List<Map<String,String>> getAllCrypto(String[] all){
+        List<Map<String,String>> allc = new ArrayList<>();
+
         jedis.auth(auth);
         for (String s : all) {
              allc.add(jedis.hgetAll(s));
